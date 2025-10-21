@@ -1,0 +1,9 @@
+# Node
+node_modules/
+.env
+npm-debug.log
+
+# React/Vite
+client/node_modules/
+client/dist/
+client/.env
