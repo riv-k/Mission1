@@ -1,19 +1,42 @@
 import React, { useState } from "react";
 import styles from "./Body.module.css";
+import axios from "axios";
 
 const MainContent = () => {
   const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [result, setResult] = useState("");
+
+  const API_URI = import.meta.env.VITE_API_URI;
+  const API_KEY = import.meta.env.VITE_API_KEY;
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
+      setImageFile(file); //real file
+      setImage(URL.createObjectURL(file)); //for preview
     }
   };
 
-  const handleIdentify = () => {
-    setResult("SUV"); // placeholder
+  const handleIdentify = async () => {
+    if (!imageFile) return;
+
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    try {
+      const res = await axios.post(`${API_URI}/google`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-api-key": `${API_KEY}`,
+        },
+      });
+
+      setResult(res.data.message);
+    } catch (error) {
+      console.error("Error identifying vehicle:", error);
+      setResult("Error identifying vehicle");
+    }
   };
 
   return (
