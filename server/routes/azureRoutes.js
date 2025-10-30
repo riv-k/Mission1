@@ -14,7 +14,7 @@ router.post("/test", (req, res) => {
 });
 
 // POST /azure
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/identify-vehicle", upload.single("image"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No image uploaded" });
 

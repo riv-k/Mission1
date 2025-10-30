@@ -25,12 +25,16 @@ const MainContent = () => {
     formData.append("image", imageFile);
 
     try {
-      const res = await axios.post(`${API_URI}/azure`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "x-api-key": `${API_KEY}`,
-        },
-      });
+      const res = await axios.post(
+        `${API_URI}/azure/identify-vehicle`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "x-api-key": `${API_KEY}`,
+          },
+        }
+      );
 
       setResult(res.data);
     } catch (error) {
