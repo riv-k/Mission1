@@ -25,14 +25,14 @@ const MainContent = () => {
     formData.append("image", imageFile);
 
     try {
-      const res = await axios.post(`${API_URI}/google`, formData, {
+      const res = await axios.post(`${API_URI}/azure`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-api-key": `${API_KEY}`,
         },
       });
 
-      setResult(res.data.message);
+      setResult(res.data);
     } catch (error) {
       console.error("Error identifying vehicle:", error);
       setResult("Error identifying vehicle");
@@ -65,8 +65,14 @@ const MainContent = () => {
 
       {result && (
         <div className={styles.result}>
-          <h3>Detected Vehicle Type:</h3>
-          <p>{result}</p>
+          <h2>Predictions:</h2>
+          <ul>
+            {result.predictions.map((pred, idx) => (
+              <li key={idx}>
+                {pred.tagName} ({(pred.probability * 100).toFixed(1)}%)
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </main>
